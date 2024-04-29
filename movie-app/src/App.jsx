@@ -1657,6 +1657,39 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState([]);
   const [selectedMovieId, setSelectedMovieId] = useState("");
+  const genres = [];
+  const languages = [];
+  const countries = [];
+  const allGenre = allMovies.map((movie) => movie.moviegenres);
+  const allLanguages = allMovies.map((movie) => movie.movielanguages);
+  const allCountry = allMovies.map((movie) => movie.moviecountries);
+
+  useEffect(() => {
+    allGenre.map((movie) =>
+      movie.map((item) => {
+        genres.includes(item) ? "" : genres.push(item);
+      })
+    );
+    console.log(genres);
+  }, []);
+
+  useEffect(() => {
+    allLanguages.map((movie) =>
+      movie.map((item) => {
+        languages.includes(item) ? "" : languages.push(item);
+      })
+    );
+    console.log(languages);
+  }, []);
+
+  useEffect(() => {
+    allCountry.map((movie) =>
+      movie.map((item) => {
+        countries.includes(item) ? "" : countries.push(item);
+      })
+    );
+    console.log(countries);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
@@ -1682,10 +1715,10 @@ function App() {
         <div className="">
           <img className="h-[220px] md:h-[300px]" src={imgurl} alt={title} />
         </div>
-        <div className="p-1 text-teal-200 h-8 text-center overflow-hidden flex justify-center items-start text-xs font-bold md:text-xl">
+        <div className="flex items-start justify-center h-8 p-1 overflow-hidden text-xs font-bold text-center text-teal-200 md:text-xl">
           <p>{title}</p>
         </div>
-        <div className="tracking-wide text-xs md:text-base flex justify-center items-center p-1">
+        <div className="flex items-center justify-center p-1 text-xs tracking-wide md:text-base">
           <p>{genre}</p>
         </div>
       </div>
@@ -1697,10 +1730,10 @@ function App() {
   return (
     <>
       {isOpen && (
-        <div className="fixed top-0 left-0 z-20 w-full min-h-screen bg-black/70 flex justify-center items-center">
+        <div className="fixed top-0 left-0 z-20 flex items-center justify-center w-full min-h-screen bg-black/70">
           <div className="relative backdrop-blur-md w-[300px] sm:w-[500px] p-5 rounded-lg border-[2px] border-white/30">
             <button
-              className=" text-white/70 absolute top-0 right-0 text-2xl p-1"
+              className="absolute top-0 right-0 p-1 text-2xl text-white/70"
               onClick={() => {
                 setIsOpen(false);
                 setSelectedMovie([]);
@@ -1718,16 +1751,16 @@ function App() {
               </div>
               {selectedMovie.length === 1 && (
                 <>
-                  <div className="flex text-2xl font-bold tracking-wider justify-center">
+                  <div className="flex justify-center text-2xl font-bold tracking-wider">
                     {singleMovie.movietitle}
                   </div>
-                  <div className="flex justify-center font-semibold p-1 text-xl">
+                  <div className="flex justify-center p-1 text-xl font-semibold">
                     <p>{singleMovie.moviegenres.join(" | ")}</p>
                   </div>
-                  <div className="flex text-white/70 overflow-x-clip justify-center p-1">
+                  <div className="flex justify-center p-1 text-white/70 overflow-x-clip">
                     <p>{singleMovie.movielanguages.join(" | ")}</p>
                   </div>
-                  <div className="flex text-white/70 overflow-x-clip justify-center p-1">
+                  <div className="flex justify-center p-1 text-white/70 overflow-x-clip">
                     <p>{singleMovie.moviecountries.join(" | ")}</p>
                   </div>
                 </>
@@ -1736,9 +1769,12 @@ function App() {
           </div>
         </div>
       )}
-      <div className=" min-h-screen bg-slate-900">
-        <nav className="text-white text-3xl text-center p-2">MOVIE</nav>
-        <div className=" flex flex-wrap gap-5 justify-evenly p-5 text-white">
+      <div className="min-h-screen bg-slate-900">
+        <nav className="fixed top-0 flex flex-col w-full p-2 text-center text-white bg-slate-900">
+          <div className="text-3xl">Movie</div>
+          <div>Filters</div>
+        </nav>
+        <div className="flex flex-wrap gap-5 p-5 pt-24 text-white justify-evenly">
           {allMovies.map((movie) => {
             return (
               <div key={movie.imdbmovieid}>
